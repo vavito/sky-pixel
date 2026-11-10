@@ -4,6 +4,20 @@ Protótipo em Python para classificar fotografias externas diurnas pela aparênc
 
 **Fluxo** — Foto → recorte do céu → conversão para HSV → máscaras → medidas → classificação.
 
+## Responsáveis e passagem de trabalho
+
+Cada integrante assume duas etapas inteiras. O próximo recebe um bloco validado e continua a partir do material entregue.
+
+| Ordem | Responsável | Etapas | O que passa adiante |
+| --- | --- | --- | --- |
+| 1 | João Victor Moreira Almeida | 1 e 2 | Escopo definido, fotos rotuladas e separadas em calibração e teste, ambiente Python configurado e CLI capaz de abrir uma imagem. |
+| 2 | João Vitor Justiniano Barbosa | 3 e 4 | Classificador executável pela CLI, recorte e máscaras disponíveis para inspeção, duas regras de decisão e limiares congelados usando a calibração. |
+| 3 | Pedro Crispim Pereira | 5 e 6 | Avaliação reproduzível no conjunto de teste, resultados registrados no README e demonstração pronta para a entrega. |
+
+- [ ] **João Victor → João Vitor.** Conferir que os caminhos das fotos são utilizáveis, que os grupos estão identificados e que a CLI abre uma foto de calibração.
+- [ ] **João Vitor → Pedro.** Demonstrar que as duas regras rodam com os mesmos arquivos, que as máscaras podem ser salvas e que os limiares ficaram registrados antes do teste.
+- [ ] **Pedro → entrega.** Conferir a execução a partir de um clone limpo e registrar os resultados obtidos e os exemplos usados na demonstração.
+
 ## 1. Definir o escopo e preparar as fotos
 
 - [ ] Definir as duas classes com exemplos rotulados. Separar céu parcialmente nublado, pouco céu visível e prédios no recorte como casos difíceis.
@@ -56,7 +70,3 @@ Protótipo em Python para classificar fotografias externas diurnas pela aparênc
 - [ ] Se a entrega exigir deep learning, treinar uma MobileNetV2 por transferência de aprendizado com as mesmas classes e a mesma divisão das fotos. Comparar os resultados com a abordagem clássica.
 
 **Critério de aceite.** Alguém do grupo consegue executar a demonstração pelo README e explicar uma decisão pelas máscaras. A API e o modelo treinado entram na validação final quando forem requisitos da disciplina.
-
-## Ordem para o dia da entrega
-
-Priorizar o fluxo completo de uma foto até uma classificação explicável. A separação e a rotulagem das imagens podem avançar em paralelo. Depois de validar o classificador, rodar a avaliação e preparar a demonstração antes de adicionar interface ou novas classes.
