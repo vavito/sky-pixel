@@ -22,7 +22,8 @@ Cada integrante assume duas etapas inteiras. O próximo recebe um bloco validado
 
 - [x] Definir as duas classes com exemplos rotulados. Separar céu parcialmente nublado, pouco céu visível e prédios no recorte como casos difíceis.
 - [x] Dividir as imagens em calibração e teste antes de ajustar o algoritmo. Manter fotos quase idênticas no mesmo grupo.
-- [ ] Se houver tempo, reunir 10 fotos por classe para calibração e outras 10 por classe para teste.
+- [x] Reunir 10 fotos por classe para calibração e outras 10 por classe para teste.
+- [x] Reservar três casos difíceis para análise qualitativa em `refs/caso_dificil/`: prédios no recorte, vista aérea com nuvens perto do horizonte e nuvem grande em grande parte fora do terço superior.
 
 **Critério de aceite.** Os dois conjuntos contêm exemplos das duas classes, com rótulos definidos antes da execução. Os casos difíceis estão separados para análise qualitativa.
 
