@@ -1,0 +1,348 @@
+{
+  "status": "congelado_2026-11-10_calibracao_v3",
+  "date": "2026-11-10",
+  "source_commit": "d30b21a",
+  "previous_calibration": "calibration_v2.json",
+  "opencv_version": "4.14.0",
+  "numpy_version": "2.2.6",
+  "thresholds": {
+    "blue_h_min": 90,
+    "blue_h_max": 130,
+    "blue_s_min": 100,
+    "blue_v_min": 50,
+    "bright_s_max": 50,
+    "bright_v_min": 180,
+    "clear_blue_min": 0.7,
+    "overcast_blue_max": 0.2,
+    "overcast_bright_min": 0.35
+  },
+  "thresholds_changed": false,
+  "rationale": "Escopo diurno confirmado; céu limpo significa predominantemente aberto. Seis fotos ambíguas ou crepusculares transferidas para análise qualitativa, sem alterar os limiares. Elas já participaram das calibrações anteriores e não constituem avaliação independente. O conjunto de teste permanece intacto.",
+  "summary": {
+    "blue": {
+      "matches_expected": 13,
+      "abstentions": 1,
+      "opposite_class": 0
+    },
+    "combined": {
+      "matches_expected": 9,
+      "abstentions": 5,
+      "opposite_class": 0
+    }
+  },
+  "images": [
+    {
+      "image": "refs/calibracao/ceu_encoberto/ceu_encoberto_1.jpg",
+      "sha256": "423766f370d463526d7a6d02e11ab41ce8b1e06b7e02673a69d375cafa789544",
+      "expected": "ceu_encoberto",
+      "blue_percent": 0.023340832395950504,
+      "bright_percent": 1.6343644544431946,
+      "decisions": {
+        "blue": {
+          "label": "ceu_encoberto",
+          "condition": "azul <= 20%"
+        },
+        "combined": {
+          "label": "indeterminado",
+          "condition": "sinais insuficientes ou conflitantes para as condições de céu limpo e encoberto"
+        }
+      },
+      "visual_review": "Nuvens escuras: quase nenhuma região clara; abstenção da combinada."
+    },
+    {
+      "image": "refs/calibracao/ceu_encoberto/ceu_encoberto_3.jpg",
+      "sha256": "ef6a1238c3587d536f08ac79bb798274ad9a915203e3cc59f103fbe451a49808",
+      "expected": "ceu_encoberto",
+      "blue_percent": 0.0,
+      "bright_percent": 0.0029238187772140053,
+      "decisions": {
+        "blue": {
+          "label": "ceu_encoberto",
+          "condition": "azul <= 20%"
+        },
+        "combined": {
+          "label": "indeterminado",
+          "condition": "sinais insuficientes ou conflitantes para as condições de céu limpo e encoberto"
+        }
+      },
+      "visual_review": "Nuvens escuras: ambas as máscaras quase vazias."
+    },
+    {
+      "image": "refs/calibracao/ceu_encoberto/ceu_encoberto_5.jpg",
+      "sha256": "0689fffe93e62974cb6ed9768793d783a7534ef26f849da14503e86f768daf9e",
+      "expected": "ceu_encoberto",
+      "blue_percent": 0.0,
+      "bright_percent": 11.599132705670332,
+      "decisions": {
+        "blue": {
+          "label": "ceu_encoberto",
+          "condition": "azul <= 20%"
+        },
+        "combined": {
+          "label": "indeterminado",
+          "condition": "sinais insuficientes ou conflitantes para as condições de céu limpo e encoberto"
+        }
+      },
+      "visual_review": "Nuvens cinzentas: máscara de claros cobre somente a região mais iluminada."
+    },
+    {
+      "image": "refs/calibracao/ceu_encoberto/ceu_encoberto_6.jpg",
+      "sha256": "7a388e0d0979b6818b4a6650310b51780dff0e08da2d6c60fbad56e2e36b982b",
+      "expected": "ceu_encoberto",
+      "blue_percent": 0.0,
+      "bright_percent": 20.731439343290447,
+      "decisions": {
+        "blue": {
+          "label": "ceu_encoberto",
+          "condition": "azul <= 20%"
+        },
+        "combined": {
+          "label": "indeterminado",
+          "condition": "sinais insuficientes ou conflitantes para as condições de céu limpo e encoberto"
+        }
+      },
+      "visual_review": "Nuvens cinzentas: claros abaixo do mínimo da combinada."
+    },
+    {
+      "image": "refs/calibracao/ceu_encoberto/ceu_encoberto_7.jpg",
+      "sha256": "b6d52565873e7c2ca5e040b7a75376276cf5037e387d8a8bbc567d21e1ec46b4",
+      "expected": "ceu_encoberto",
+      "blue_percent": 22.19990105349853,
+      "bright_percent": 0.00015826375794761026,
+      "decisions": {
+        "blue": {
+          "label": "indeterminado",
+          "condition": "proporção de azul entre os limiares de decisão"
+        },
+        "combined": {
+          "label": "indeterminado",
+          "condition": "sinais insuficientes ou conflitantes para as condições de céu limpo e encoberto"
+        }
+      },
+      "visual_review": "Nuvens azuladas ativam a máscara azul; ambas as regras se abstêm."
+    },
+    {
+      "image": "refs/calibracao/ceu_encoberto/ceu_encoberto_10.jpg",
+      "sha256": "dc10de23a4cb09f80d0365c8a5b9661046e7dfa0fdd7bd309e73777037c8219c",
+      "expected": "ceu_encoberto",
+      "blue_percent": 0.0,
+      "bright_percent": 97.23137823343929,
+      "decisions": {
+        "blue": {
+          "label": "ceu_encoberto",
+          "condition": "azul <= 20%"
+        },
+        "combined": {
+          "label": "ceu_encoberto",
+          "condition": "azul <= 20% e claros >= 35%"
+        }
+      },
+      "visual_review": "Nuvens claras ocupam quase todo o recorte; máscaras coerentes."
+    },
+    {
+      "image": "refs/calibracao/ceu_limpo/ceu_limpo_1.jpg",
+      "sha256": "62538121e4bbbee8db0ac0010f872b115af6bdcfe2a99badb551f20f9b58aa36",
+      "expected": "ceu_limpo",
+      "blue_percent": 99.9301,
+      "bright_percent": 0.0,
+      "decisions": {
+        "blue": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70%"
+        },
+        "combined": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70% e claros < 35%"
+        }
+      },
+      "visual_review": "Azul predominante; nuvens finas também entram na máscara azul."
+    },
+    {
+      "image": "refs/calibracao/ceu_limpo/ceu_limpo_2.jpg",
+      "sha256": "14758d51ba8653107690a72267a6c0fb7fd4829f029625d6de8aed8884067e0b",
+      "expected": "ceu_limpo",
+      "blue_percent": 93.22573396240568,
+      "bright_percent": 0.3412108035408093,
+      "decisions": {
+        "blue": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70%"
+        },
+        "combined": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70% e claros < 35%"
+        }
+      },
+      "visual_review": "Azul predominante; parte das nuvens finas escapa de ambas as máscaras."
+    },
+    {
+      "image": "refs/calibracao/ceu_limpo/ceu_limpo_3.jpg",
+      "sha256": "b9e87240b19b8bd390a66f34a3840d0966df03ade8404d113d8269872d4d1d6d",
+      "expected": "ceu_limpo",
+      "blue_percent": 100.0,
+      "bright_percent": 0.0,
+      "decisions": {
+        "blue": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70%"
+        },
+        "combined": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70% e claros < 35%"
+        }
+      },
+      "visual_review": "Recorte com azul uniforme; máscara azul integral."
+    },
+    {
+      "image": "refs/calibracao/ceu_limpo/ceu_limpo_4.jpg",
+      "sha256": "68b461afeadf97a788ebd828ad02babae9252ededaee0bca0fd7f64e0869a529",
+      "expected": "ceu_limpo",
+      "blue_percent": 80.3467729421314,
+      "bright_percent": 0.0,
+      "decisions": {
+        "blue": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70%"
+        },
+        "combined": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70% e claros < 35%"
+        }
+      },
+      "visual_review": "Azul menos saturado na base do recorte não é marcado; predomínio de azul mantido."
+    },
+    {
+      "image": "refs/calibracao/ceu_limpo/ceu_limpo_5.jpg",
+      "sha256": "aa9b64681a228b62c1ed1fbdc90b61b60708414353c9b4c7fe686e943437e14f",
+      "expected": "ceu_limpo",
+      "blue_percent": 94.43797382020409,
+      "bright_percent": 1.5746898035203694,
+      "decisions": {
+        "blue": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70%"
+        },
+        "combined": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70% e claros < 35%"
+        }
+      },
+      "visual_review": "Pequena nuvem à esquerda ativa parcialmente a máscara de claros."
+    },
+    {
+      "image": "refs/calibracao/ceu_limpo/ceu_limpo_6.jpg",
+      "sha256": "462ecb276d212bb6b41615f9e109225e8988feaba4aaf36ebfbaa2f74d8f127c",
+      "expected": "ceu_limpo",
+      "blue_percent": 94.23323727639203,
+      "bright_percent": 1.7024764188082642,
+      "decisions": {
+        "blue": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70%"
+        },
+        "combined": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70% e claros < 35%"
+        }
+      },
+      "visual_review": "Região do sol ativa claros; neve fica fora do recorte."
+    },
+    {
+      "image": "refs/calibracao/ceu_limpo/ceu_limpo_9.jpg",
+      "sha256": "273573b00b1a35de655118323efaf19ecb3e3805f8d997ba4577481958b35f1d",
+      "expected": "ceu_limpo",
+      "blue_percent": 100.0,
+      "bright_percent": 0.0,
+      "decisions": {
+        "blue": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70%"
+        },
+        "combined": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70% e claros < 35%"
+        }
+      },
+      "visual_review": "Recorte com azul uniforme; máscara azul integral."
+    },
+    {
+      "image": "refs/calibracao/ceu_limpo/ceu_limpo_10.jpg",
+      "sha256": "c6e542d2256f7aa6fadcc11039097d0841a3f4ff5a6c4770eb01a211e5cfb5bc",
+      "expected": "ceu_limpo",
+      "blue_percent": 85.22474202626643,
+      "bright_percent": 6.27875234521576,
+      "decisions": {
+        "blue": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70%"
+        },
+        "combined": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70% e claros < 35%"
+        }
+      },
+      "visual_review": "Nuvens claras detectadas parcialmente; azul continua predominante."
+    }
+  ],
+  "excluded_images": [
+    {
+      "original_image": "refs/calibracao/ceu_encoberto/ceu_encoberto_2.jpg",
+      "image": "refs/caso_dificil/origem_calibracao_ceu_encoberto_2.jpg",
+      "sha256": "0f04df42f8bf47b6f05a07a516bd8b705f9994e6db041313af450487e1333a72",
+      "previous_label": "ceu_encoberto",
+      "reason": "Céu parcialmente nublado com aberturas azuis; rótulo ambíguo entre as duas classes.",
+      "previously_used_in_calibration": true,
+      "evaluation_role": "qualitative_only_not_independent"
+    },
+    {
+      "original_image": "refs/calibracao/ceu_encoberto/ceu_encoberto_4.jpg",
+      "image": "refs/caso_dificil/origem_calibracao_ceu_encoberto_4.jpg",
+      "sha256": "9c07340de9bafaaaa7a79cf94a31ad025f8ccd7dbba7281131869a745ea9263c",
+      "previous_label": "ceu_encoberto",
+      "reason": "Pôr do sol com nuvens coloridas, fora do escopo diurno.",
+      "previously_used_in_calibration": true,
+      "evaluation_role": "qualitative_only_not_independent"
+    },
+    {
+      "original_image": "refs/calibracao/ceu_encoberto/ceu_encoberto_8.jpg",
+      "image": "refs/caso_dificil/origem_calibracao_ceu_encoberto_8.jpg",
+      "sha256": "cfbdef28db426d8adea0cc2efbbcb0e7a0d8ec009bcbbcdd982a9343d4204381",
+      "previous_label": "ceu_encoberto",
+      "reason": "Iluminação alaranjada e céu escuro, fora do escopo diurno.",
+      "previously_used_in_calibration": true,
+      "evaluation_role": "qualitative_only_not_independent"
+    },
+    {
+      "original_image": "refs/calibracao/ceu_encoberto/ceu_encoberto_9.jpg",
+      "image": "refs/caso_dificil/origem_calibracao_ceu_encoberto_9.jpg",
+      "sha256": "04f587a9ab0c7c186a3767994e5a32d620fa5568043246ed6060fa0d349e8bdf",
+      "previous_label": "ceu_encoberto",
+      "reason": "Pôr do sol e nuvens escuras, fora do escopo diurno.",
+      "previously_used_in_calibration": true,
+      "evaluation_role": "qualitative_only_not_independent"
+    },
+    {
+      "original_image": "refs/calibracao/ceu_limpo/ceu_limpo_7.jpg",
+      "image": "refs/caso_dificil/origem_calibracao_ceu_limpo_7.jpg",
+      "sha256": "57e87dd2b9d36db92bbe4be18046f5d295019b38e4f3eb88a48b275988583524",
+      "previous_label": "ceu_limpo",
+      "reason": "Crepúsculo com céu violeta, fora do escopo diurno.",
+      "previously_used_in_calibration": true,
+      "evaluation_role": "qualitative_only_not_independent"
+    },
+    {
+      "original_image": "refs/calibracao/ceu_limpo/ceu_limpo_8.jpg",
+      "image": "refs/caso_dificil/origem_calibracao_ceu_limpo_8.jpg",
+      "sha256": "ac9eebabc254b8d59a6d5326426e9cf7430cb708c265d1d8619461be00544628",
+      "previous_label": "ceu_limpo",
+      "reason": "Crepúsculo com nuvens rosadas, fora do escopo diurno.",
+      "previously_used_in_calibration": true,
+      "evaluation_role": "qualitative_only_not_independent"
+    }
+  ],
+  "class_definitions": {
+    "ceu_limpo": "Céu predominantemente aberto em iluminação diurna; permite nuvens isoladas ou finas.",
+    "ceu_encoberto": "Céu coberto ou quase inteiramente coberto por nuvens em iluminação diurna, inclusive nuvens escuras.",
+    "caso_dificil": "Cenas ambíguas, parcialmente nubladas sem predominância clara, pouco céu visível, obstruções no recorte, pôr do sol ou crepúsculo; análise qualitativa sem rótulo binário esperado."
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "status": "congelado_2026-11-10_calibracao_v1",
+  "date": "2026-11-10",
+  "source_commit": "114041c",
+  "opencv_version": "4.14.0",
+  "numpy_version": "2.2.6",
+  "thresholds": {
+    "blue_h_min": 90,
+    "blue_h_max": 130,
+    "blue_s_min": 100,
+    "blue_v_min": 50,
+    "bright_s_max": 50,
+    "bright_v_min": 180,
+    "clear_blue_min": 0.7,
+    "overcast_blue_max": 0.2,
+    "overcast_bright_min": 0.35
+  },
+  "images": [
+    {
+      "image": "refs/calibracao/ceu_encoberto/ceu_encoberto_1.jpg",
+      "sha256": "423766f370d463526d7a6d02e11ab41ce8b1e06b7e02673a69d375cafa789544",
+      "expected": "ceu_encoberto",
+      "blue_percent": 0.023340832395950504,
+      "bright_percent": 1.6343644544431946,
+      "decisions": {
+        "blue": {
+          "label": "ceu_encoberto",
+          "condition": "azul <= 20%"
+        },
+        "combined": {
+          "label": "indeterminado",
+          "condition": "sinais insuficientes ou conflitantes para as condições de céu limpo e encoberto"
+        }
+      }
+    },
+    {
+      "image": "refs/calibracao/ceu_encoberto/ceu_encoberto_2.jpg",
+      "sha256": "0f04df42f8bf47b6f05a07a516bd8b705f9994e6db041313af450487e1333a72",
+      "expected": "ceu_encoberto",
+      "blue_percent": 10.781492696005918,
+      "bright_percent": 39.08893075073965,
+      "decisions": {
+        "blue": {
+          "label": "ceu_encoberto",
+          "condition": "azul <= 20%"
+        },
+        "combined": {
+          "label": "ceu_encoberto",
+          "condition": "azul <= 20% e claros >= 35%"
+        }
+      }
+    },
+    {
+      "image": "refs/calibracao/ceu_limpo/ceu_limpo_1.jpg",
+      "sha256": "62538121e4bbbee8db0ac0010f872b115af6bdcfe2a99badb551f20f9b58aa36",
+      "expected": "ceu_limpo",
+      "blue_percent": 99.9301,
+      "bright_percent": 0.0,
+      "decisions": {
+        "blue": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70%"
+        },
+        "combined": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70% e claros < 35%"
+        }
+      }
+    },
+    {
+      "image": "refs/calibracao/ceu_limpo/ceu_limpo_2.jpg",
+      "sha256": "14758d51ba8653107690a72267a6c0fb7fd4829f029625d6de8aed8884067e0b",
+      "expected": "ceu_limpo",
+      "blue_percent": 93.22573396240568,
+      "bright_percent": 0.3412108035408093,
+      "decisions": {
+        "blue": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70%"
+        },
+        "combined": {
+          "label": "ceu_limpo",
+          "condition": "azul >= 70% e claros < 35%"
+        }
+      }
+    }
+  ]
+}
