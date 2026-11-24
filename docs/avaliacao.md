@@ -101,6 +101,32 @@ As seis fotos `origem_calibracao_*` participaram da calibração e não servem c
 
 Os limiares continuam congelados. Se forem ajustados a partir destes resultados, uma nova avaliação precisa usar fotos independentes deste teste.
 
+## Regra céu aberto (v4, 2026-11-24)
+
+A avaliação acima mostrou dois pontos cegos das regras v3: nuvens **escuras** não entram na máscara de claros, e céu limpo **com névoa** não entra na máscara azul (S < 100). A regra céu aberto troca a pergunta "tem azul forte?" por "quanto do recorte parece céu aberto?". Um pixel conta quando passa nos três filtros ao mesmo tempo:
+
+| Filtro | Condição (HSV OpenCV) | Elimina |
+| --- | --- | --- |
+| Cor | H entre 90 e 130, S ≥ 30 | Nuvens cinza ou brancas; aceita o azul pálido da névoa |
+| Brilho | V ≥ 100 | Nuvens escuras de tempestade |
+| Textura | desvio padrão local do brilho (janela 7×7) < 4 | Nuvens com relevo, inclusive as azuladas |
+
+A foto é reduzida para 320 px de largura antes da medida, para que a textura não dependa da resolução. A decisão é: céu aberto ≥ 50% dá `ceu_limpo`, ≤ 30% dá `ceu_encoberto` e o intervalo entre eles dá `indeterminado`. Os valores ficam em `OPEN_SKY` em `classifier.py`. As regras v3 e seus limiares congelados não foram alterados.
+
+| Regra (20 fotos de teste) | Acertos | Erros | Abstenções |
+| --- | ---: | ---: | ---: |
+| Referência | 15 (75%) | 3 | 2 |
+| Combinada | 9 (45%) | 1 | 10 |
+| Céu aberto | 20 (100%) | 0 | 0 |
+
+**Atenção ao protocolo.** A regra céu aberto foi desenhada **depois** de vermos os erros do teste, então os 20/20 são uma estimativa otimista. Para medir de forma justa, `crossval.py` escolhe automaticamente os parâmetros da máscara (S mínimo, V mínimo e textura máxima, em 80 combinações) e o limiar, maximizando a folga entre as classes:
+
+- **Calibração → teste:** com parâmetros escolhidos só nas 14 fotos de calibração (S ≥ 50, V ≥ 120, textura < 8 e limiar 48,8%), o teste dá **18/20 (90%)**, sem abstenções. Os erros são `ceu_limpo_5` e `ceu_limpo_8`.
+- **Leave-one-out nas 34 fotos rotuladas:** cada foto é classificada com parâmetros escolhidos nas outras 33. O resultado é **34/34**.
+- **Folga:** com os parâmetros finais, a foto limpa com menos céu aberto tem 62,93% e a encoberta com mais tem 21,80%.
+
+Nos casos difíceis, a regra se abstém no crepúsculo (`origem_calibracao_ceu_limpo_7`, 34,70%) e na vista aérea (`caso_dificil_3`, 39,13%). Continua dizendo `ceu_limpo` quando a nuvem está fora do recorte (`caso_dificil_2`) e `ceu_encoberto` nos pores do sol, que estão fora do escopo diurno. A confirmação definitiva exige fotos novas, independentes das 34 usadas aqui.
+
 ## Demonstração (etapa 6)
 
 Uma foto de cada classe e um caso difícil, com a foto original, o recorte, as máscaras e a decisão das duas regras. Com o ambiente ativado:

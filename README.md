@@ -17,6 +17,8 @@ O programa recorta o terço superior da foto e converte a região para HSV. Em s
 
 Nas **20 fotos de teste**, a regra de referência teve 15 acertos, 3 erros e 2 abstenções. A regra combinada teve 9 acertos, 1 erro e 10 abstenções. Nuvens escuras podem produzir poucos pixels na máscara de claros, e prédios ou vegetação no terço superior podem interferir nas medidas.
 
+Para corrigir esses pontos cegos, a **regra céu aberto** (padrão da CLI) conta os pixels azulados, não escuros e de textura lisa. Nas mesmas 20 fotos, ela teve 20 acertos, sem erros nem abstenções. Como foi desenhada depois de vermos o teste, também a validamos com `crossval.py`: 18/20 calibrando só com a calibração e 34/34 em leave-one-out. Detalhes em [docs/avaliacao.md](docs/avaliacao.md#regra-céu-aberto-v4-2026-11-24).
+
 ## Experimente
 
 Com Python 3.10 ou superior e um ambiente virtual ativo, execute a partir da raiz do projeto.
@@ -33,5 +35,6 @@ Troque o caminho da imagem para testar outra foto. O recorte e as máscaras fica
 - [Metodologia, calibração e guia de execução](docs/metodologia.md)
 - [Resultados da avaliação e roteiro da demonstração](docs/avaliacao.md)
 - [Divisão de trabalho, etapas e critérios de aceite](docs/plano-de-trabalho.md)
+- [Roteiro da apresentação final](docs/roteiro-apresentacao.md)
 
 **Equipe** — João Victor Moreira Almeida, João Vitor Justiniano Barbosa e Pedro Crispim Pereira.

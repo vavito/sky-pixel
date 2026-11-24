@@ -55,11 +55,17 @@ pip install -r requirements.txt
 Com o ambiente ativado, os comandos são os mesmos nos dois sistemas:
 
 ```bash
-# Classificar uma foto (regra combinada)
+# Classificar uma foto (regra céu aberto, padrão)
 python main.py refs/teste/ceu_limpo/ceu_limpo_1.jpg
 
-# Comparar as duas regras e salvar recorte e máscaras
+# Comparar as duas regras originais e salvar recorte e máscaras
 python main.py refs/teste/ceu_limpo/ceu_limpo_1.jpg --rule both --diagnostics diagnostics/demo/limpo
+
+# Comparar as três regras
+python main.py refs/teste/ceu_limpo/ceu_limpo_3.jpg --rule all
+
+# Validação da regra céu aberto (calibração -> teste e leave-one-out)
+python crossval.py
 
 # Saída em JSON
 python main.py refs/teste/ceu_limpo/ceu_limpo_1.jpg --rule both --json
@@ -69,9 +75,9 @@ python evaluate.py
 python evaluate.py --csv diagnostics/avaliacao.csv --json diagnostics/avaliacao.json --diagnostics diagnostics/avaliacao
 ```
 
-`classifier.py` contém a leitura, a extração e as duas regras; `main.py` oferece a CLI; `evaluate.py` faz a avaliação em lote. `--rule blue` executa a referência, `--rule combined` executa a combinada (padrão) e `--rule both` compara ambas usando as mesmas medidas. Arquivos ausentes ou inválidos encerram com código 2 e uma mensagem de erro.
+`classifier.py` contém a leitura, a extração e as duas regras; `main.py` oferece a CLI; `evaluate.py` faz a avaliação em lote. `--rule blue` executa a referência, `--rule combined` executa a combinada, `--rule open` executa a regra céu aberto (padrão), `--rule both` compara as duas originais e `--rule all` compara as três, sempre usando as mesmas medidas. `crossval.py` valida a regra céu aberto. Arquivos ausentes ou inválidos encerram com código 2 e uma mensagem de erro.
 
-O diagnóstico salva `recorte.png`, `mascara_azul.png` e `mascara_claros.png`. Nas máscaras, branco indica pixel marcado e preto indica pixel descartado. Cada porcentagem é a quantidade de pixels marcados dividida pela área total do recorte. Use uma pasta por foto: arquivos de diagnóstico com os mesmos nomes são substituídos. O recorte usa as primeiras `altura // 3` linhas, com mínimo de uma linha.
+O diagnóstico salva `recorte.png`, `mascara_azul.png`, `mascara_claros.png` e `mascara_ceu_aberto.png`. Nas máscaras, branco indica pixel marcado e preto indica pixel descartado. Cada porcentagem é a quantidade de pixels marcados dividida pela área total do recorte. Use uma pasta por foto: arquivos de diagnóstico com os mesmos nomes são substituídos. O recorte usa as primeiras `altura // 3` linhas, com mínimo de uma linha.
 
 ### Calibração v3 — escopo diurno consolidado em 2026-11-10
 
