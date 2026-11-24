@@ -30,6 +30,33 @@ THRESHOLDS = Thresholds()
 CALIBRATION_STATUS = "congelado_2026-11-10_calibracao_v3"
 
 
+@dataclass(frozen=True)
+class OpenSkyThresholds:
+    """Regra "céu aberto" (v4, 2026-11-24): cor azulada + brilho + textura lisa.
+
+    Um pixel é "céu aberto" quando tem matiz azul (mesmo pouco saturado, como
+    num céu com névoa), não é escuro e está numa vizinhança lisa. Nuvens
+    escuras falham no brilho, nuvens cinza falham na cor e nuvens com relevo
+    falham na textura. A imagem é reduzida para `work_width` pixels de largura
+    antes da medida, para que a textura não dependa da resolução da foto.
+    Escolhidos depois da avaliação v3; ver "Regra céu aberto" no README.
+    """
+
+    work_width: int = 320
+    h_min: int = 90
+    h_max: int = 130
+    s_min: int = 30
+    v_min: int = 100
+    texture_window: int = 7
+    texture_max: float = 4.0
+    clear_min: float = 0.50
+    overcast_max: float = 0.30
+
+
+OPEN_SKY = OpenSkyThresholds()
+OPEN_SKY_STATUS = "regra_ceu_aberto_v4_2026-11-24"
+
+
 @dataclass
 class Features:
     crop: np.ndarray
@@ -37,6 +64,8 @@ class Features:
     bright_mask: np.ndarray
     blue_ratio: float
     bright_ratio: float
+    open_mask: np.ndarray | None = None
+    open_ratio: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -59,6 +88,21 @@ def load_image(path: str | Path) -> np.ndarray:
     return image
 
 
+def open_sky_mask(image: np.ndarray, params: OpenSkyThresholds = OPEN_SKY) -> np.ndarray:
+    """Máscara de "céu aberto" no terço superior, na resolução de trabalho."""
+    height = max(3, round(params.work_width * image.shape[0] / image.shape[1]))
+    small = cv2.resize(image, (params.work_width, height), interpolation=cv2.INTER_AREA)
+    crop = small[:max(1, small.shape[0] // 3)]
+    hsv = cv2.cvtColor(crop, cv2.COLOR_BGR2HSV)
+    color = cv2.inRange(hsv, (params.h_min, params.s_min, params.v_min), (params.h_max, 255, 255))
+    gray = cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY).astype(np.float64)
+    window = (params.texture_window, params.texture_window)
+    mean = cv2.blur(gray, window)
+    local_std = np.sqrt(np.maximum(cv2.blur(gray * gray, window) - mean * mean, 0))
+    smooth = local_std < params.texture_max
+    return np.where((color > 0) & smooth, 255, 0).astype(np.uint8)
+
+
 def extract_features(image: np.ndarray, thresholds: Thresholds = THRESHOLDS) -> Features:
     if image.ndim != 3 or image.shape[2] != 3 or image.size == 0 or image.dtype != np.uint8:
         raise ValueError("A imagem deve ser uma matriz BGR uint8 não vazia com três canais.")
@@ -72,14 +116,24 @@ def extract_features(image: np.ndarray, thresholds: Thresholds = THRESHOLDS) -> 
     bright_mask = cv2.inRange(
         hsv, (0, 0, thresholds.bright_v_min), (179, thresholds.bright_s_max, 255)
     )
+    open_mask = open_sky_mask(image)
     return Features(
         crop, blue_mask, bright_mask,
         float(np.count_nonzero(blue_mask) / blue_mask.size),
         float(np.count_nonzero(bright_mask) / bright_mask.size),
+        open_mask,
+        float(np.count_nonzero(open_mask) / open_mask.size),
     )
 
 
 def classify(features: Features, rule: str = "combined", thresholds: Thresholds = THRESHOLDS) -> Decision:
+    if rule == "open":
+        ratio, p = features.open_ratio, OPEN_SKY
+        if ratio >= p.clear_min:
+            return Decision("ceu_limpo", f"céu aberto >= {p.clear_min:.0%}")
+        if ratio <= p.overcast_max:
+            return Decision("ceu_encoberto", f"céu aberto <= {p.overcast_max:.0%}")
+        return Decision("indeterminado", "proporção de céu aberto entre os limiares de decisão")
     blue, bright = features.blue_ratio, features.bright_ratio
     clear = blue >= thresholds.clear_blue_min
     low_blue = blue <= thresholds.overcast_blue_max
@@ -102,7 +156,11 @@ def classify(features: Features, rule: str = "combined", thresholds: Thresholds 
 def save_diagnostics(features: Features, directory: str | Path) -> None:
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
-    for name, image in (("recorte.png", features.crop), ("mascara_azul.png", features.blue_mask), ("mascara_claros.png", features.bright_mask)):
+    images = [("recorte.png", features.crop), ("mascara_azul.png", features.blue_mask), ("mascara_claros.png", features.bright_mask)]
+    if features.open_mask is not None:
+        height, width = features.crop.shape[:2]
+        images.append(("mascara_ceu_aberto.png", cv2.resize(features.open_mask, (width, height), interpolation=cv2.INTER_NEAREST)))
+    for name, image in images:
         try:
             success, encoded = cv2.imencode(".png", image)
             if not success:

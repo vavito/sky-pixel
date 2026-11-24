@@ -9,7 +9,7 @@ from pathlib import Path
 
 from classifier import CALIBRATION_STATUS, THRESHOLDS, classify, extract_features, load_image, save_diagnostics
 
-RULES = ("blue", "combined")
+RULES = ("blue", "combined", "open")
 CLASSES = ("ceu_encoberto", "ceu_limpo")
 OUTPUTS = (*CLASSES, "indeterminado")
 
@@ -27,6 +27,7 @@ def run_photo(path: Path, expected: str | None, diagnostics: Path | None) -> dic
         "expected": expected,
         "blue_percent": features.blue_ratio * 100,
         "bright_percent": features.bright_ratio * 100,
+        "open_percent": features.open_ratio * 100,
     }
     for rule in RULES:
         decision = classify(features, rule)
@@ -65,10 +66,10 @@ def ratio(value: float | None) -> str:
 
 def markdown_report(test_rows: list[dict], hard_rows: list[dict], summaries: dict) -> str:
     lines = [f"Limiares: `{CALIBRATION_STATUS}`", "", "### Resultados por foto do teste", ""]
-    lines += ["| Foto | Esperado | Azul | Claros | Referência | Combinada |", "| --- | --- | ---: | ---: | --- | --- |"]
+    lines += ["| Foto | Esperado | Azul | Claros | Céu aberto | Referência | Combinada | Céu aberto |", "| --- | --- | ---: | ---: | ---: | --- | --- | --- |"]
     for r in test_rows:
-        lines.append(f"| `{Path(r['image']).name}` | {r['expected']} | {pct(r['blue_percent'])} | {pct(r['bright_percent'])} | {r['blue']} | {r['combined']} |")
-    for rule, title in (("blue", "Referência (só azul)"), ("combined", "Combinada")):
+        lines.append(f"| `{Path(r['image']).name}` | {r['expected']} | {pct(r['blue_percent'])} | {pct(r['bright_percent'])} | {pct(r['open_percent'])} | {r['blue']} | {r['combined']} | {r['open']} |")
+    for rule, title in (("blue", "Referência (só azul)"), ("combined", "Combinada"), ("open", "Céu aberto (v4)")):
         s = summaries[rule]
         lines += ["", f"### Matriz de confusão — {title}", "", "| Esperado \\ Saída | " + " | ".join(OUTPUTS) + " |", "| --- |" + " ---: |" * len(OUTPUTS)]
         for exp in CLASSES:
@@ -80,9 +81,9 @@ def markdown_report(test_rows: list[dict], hard_rows: list[dict], summaries: dic
             f"acurácia quando decide: {ratio(s['accuracy_when_decided'])}",
         ]
     lines += ["", "### Casos difíceis (análise qualitativa, sem rótulo esperado)", ""]
-    lines += ["| Foto | Azul | Claros | Referência | Combinada |", "| --- | ---: | ---: | --- | --- |"]
+    lines += ["| Foto | Azul | Claros | Céu aberto | Referência | Combinada | Céu aberto |", "| --- | ---: | ---: | ---: | --- | --- | --- |"]
     for r in hard_rows:
-        lines.append(f"| `{Path(r['image']).name}` | {pct(r['blue_percent'])} | {pct(r['bright_percent'])} | {r['blue']} | {r['combined']} |")
+        lines.append(f"| `{Path(r['image']).name}` | {pct(r['blue_percent'])} | {pct(r['bright_percent'])} | {pct(r['open_percent'])} | {r['blue']} | {r['combined']} | {r['open']} |")
     return "\n".join(lines)
 
 
